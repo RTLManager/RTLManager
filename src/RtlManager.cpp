@@ -14,6 +14,8 @@ extern TCHAR iniFilePath[MAX_PATH];
 const string FLAG = "V0.8OK";
 extern DefaultPref defaultPref;
 bool isRtl;
+HWND lastView;
+
 
 
 //represents the current buffer (tab) full path
@@ -64,16 +66,19 @@ void loadSettings() {
 //checks if the current buffer (tab) in NPP is in rtl mode
 //RETURN VALUE: true if it's in rtl, false otherwise
 bool isCurrentRTL() {
-	long exStyle = static_cast<long>(::GetWindowLongPtr(getCurrentView(), GWL_EXSTYLE));
+	long exStyle = static_cast<long>(::GetWindowLongPtr(getLastView(), GWL_EXSTYLE));
 	return (exStyle & WS_EX_LAYOUTRTL) != 0;
 }
 
-//gets the current view
+//saves the last view and returns it the next time the function will be called
+//If there's no last view saved here the function returns the current view
 //thanks to Yaron for the reference and pnedev for this function
- HWND getCurrentView()
+ HWND getLastView()
 {
-	return (::SendMessage(nppData._nppHandle, NPPMSG + 88, 0, 0) == MAIN_VIEW) ?
+	 HWND temp = lastView;
+	 lastView = (::SendMessage(nppData._nppHandle, NPPMSG + 88, 0, 0) == MAIN_VIEW) ?
 		nppData._scintillaMainHandle : nppData._scintillaSecondHandle;
+	 return (temp != NULL)? temp : lastView;
 }
 
 //changes text direction of the current buffer (tab) in NPP to rtl or ltr, depends on the toRtl parameter
@@ -89,7 +94,7 @@ void toggleRtl() {
 
 //checks if the first char in the current open document is from an rtl language (Hebrew, Arabic - 0xD7/8/9)
 bool isFirstCharRTL() {
-	unsigned char ch =  ::SendMessage(getCurrentView(), SCI_GETCHARAT, 0, 0);
+	unsigned char ch =  ::SendMessage(getLastView(), SCI_GETCHARAT, 0, 0);
 	return ch == 0xD7 || ch == 0xD8 || ch == 0xD9 || ch == 0xEF || ch ==0xDD || ch == 0xDA;
 }
 

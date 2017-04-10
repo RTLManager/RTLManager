@@ -35,7 +35,7 @@ void PrefDialog::doDialog()
 }
 
 
-BOOL CALLBACK PrefDialog::run_dlgProc(UINT Message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK PrefDialog::run_dlgProc(UINT Message, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT dpSelection;
 	switch (Message)

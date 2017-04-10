@@ -32,7 +32,7 @@ void HelpDialog::doDialog()
 }
 
 
-BOOL CALLBACK HelpDialog::run_dlgProc( UINT Message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK HelpDialog::run_dlgProc( UINT Message, WPARAM wParam, LPARAM lParam)
 {
 	switch (Message) 
 	{

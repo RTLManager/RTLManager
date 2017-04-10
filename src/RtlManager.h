@@ -52,4 +52,4 @@ bool isFirstCharRTL();
 void toggleRtl();
 
 void fileBeforeClose();
-HWND getCurrentView();
+HWND getLastView();
