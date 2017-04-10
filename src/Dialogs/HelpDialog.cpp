@@ -42,6 +42,7 @@ INT_PTR CALLBACK HelpDialog::run_dlgProc( UINT Message, WPARAM wParam, LPARAM lP
             _urlNppPlugins.init(_hInst, _hSelf);
             _urlAspell.init(_hInst, _hSelf);
             _urlAspellWin32.init(_hInst, _hSelf);
+			//this doesn't work with 64 bit for some reason, I'm removeing this from 64 bit for now
 #ifndef _WIN64
             _emailLink.create(::GetDlgItem(_hSelf, IDD_DEV_EMAIL), _T("mailto:ezraw100@gmail.com"));
             _urlNppPlugins.create(::GetDlgItem(_hSelf, IDC_SOURCE_LINK), _T("https://github.com/RTLManager"));
