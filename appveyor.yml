@@ -18,6 +18,9 @@ install:
     - if "%platform%"=="x64" set archi=amd64
     - if "%platform%"=="Win32" set archi=x86
     - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %archi%
+    #force a package restoring
+    - del "%APPVEYOR_BUILD_FOLDER%"\packages\boost.1.63.0.0\boost.1.63.0.0.nupkg
+    - nuget restore "%APPVEYOR_BUILD_FOLDER%"\vs.proj\packages.config -PackagesDirectory "%APPVEYOR_BUILD_FOLDER%"\packages
 
 build:
     parallel: true                  # enable MSBuild parallel builds
@@ -25,18 +28,18 @@ build:
 
 build_script:
     - cd "%APPVEYOR_BUILD_FOLDER%"\vs.proj
-    - msbuild NppPluginTemplate.vcxproj /m /p:configuration="%configuration%" /p:platform="%platform%" /p:PlatformToolset="%PlatformToolset%"
+    - msbuild NppPluginTemplate.vcxproj /m /p:configuration="%configuration%" /p:platform="%platform%" /p:PlatformToolset="%PlatformToolset%" /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 after_build:
     - cd "%APPVEYOR_BUILD_FOLDER%"
     - ps: >-
 
         if ($env:PLATFORM -eq "x64" -and $env:CONFIGURATION -eq "Release") {
-            Push-AppveyorArtifact "bin64\RTLManager.dll" -FileName RTLManager.dll
+            #Push-AppveyorArtifact "bin64\RTLManager.dll" -FileName RTLManager.dll
         }
 
         if ($env:PLATFORM -eq "Win32" -and $env:CONFIGURATION -eq "Release") {
-            Push-AppveyorArtifact "bin\RTLManager.dll" -FileName RTLManager.dll
+            #Push-AppveyorArtifact "bin\RTLManager.dll" -FileName RTLManager.dll
         }
 
         if ($($env:APPVEYOR_REPO_TAG) -eq "true" -and $env:CONFIGURATION -eq "Release" -and $env:PLATFORMTOOLSET -eq "v140_xp") {
