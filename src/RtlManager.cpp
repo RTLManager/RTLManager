@@ -38,9 +38,14 @@ bool isCurrentRTL() {
  HWND getLastView()
 {
 	 HWND temp = lastView;
-	 lastView = (::SendMessage(nppData._nppHandle, NPPMSG + 88, 0, 0) == MAIN_VIEW) ?
-		nppData._scintillaMainHandle : nppData._scintillaSecondHandle;
+	 lastView = getCurrentView();
 	 return (temp != NULL)? temp : lastView;
+}
+
+//returns the current view 
+HWND getCurrentView(){
+	return (::SendMessage(nppData._nppHandle, NPPMSG + 88, 0, 0) == MAIN_VIEW) ?
+		nppData._scintillaMainHandle : nppData._scintillaSecondHandle;
 }
 
 //changes text direction of the current buffer (tab) in NPP to rtl or ltr, depends on the toRtl parameter
@@ -56,7 +61,7 @@ void toggleRtl() {
 
 //checks if the first char in the current open document is from an rtl language (Hebrew, Arabic - 0xD7/8/9)
 bool isFirstCharRTL() {
-	unsigned char ch =  ::SendMessage(getLastView(), SCI_GETCHARAT, 0, 0);
+	unsigned char ch =  ::SendMessage(getCurrentView(), SCI_GETCHARAT, 0, 0);
 	return ch == 0xD7 || ch == 0xD8 || ch == 0xD9 || ch == 0xEF || ch ==0xDD || ch == 0xDA;
 }
 

@@ -24,3 +24,4 @@ void toggleRtl();
 
 void fileBeforeClose();
 HWND getLastView();
+HWND getCurrentView();
