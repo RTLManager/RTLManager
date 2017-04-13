@@ -22,6 +22,7 @@
 //#include "Dialogs/resource.h"
 #include "Dialogs/HelpDialog.h"
 #include "Dialogs/PrefDialog.h"
+#include "Settings.h"
 
 extern FuncItem funcItem[nbFunc];
 extern NppData nppData;
@@ -42,7 +43,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
     switch (reasonForCall)
     {
       case DLL_PROCESS_ATTACH:
-        pluginInit(hModule);
         break;
 
       case DLL_PROCESS_DETACH:
@@ -98,6 +98,7 @@ extern "C" __declspec(dllexport) void beNotified(SCNotification *notifyCode)
 		saveSettings();
 		break;
 	case NPPN_READY:
+		buildIniPath();
 		loadSettings();
 		isReady = true;
 	case NPPN_BUFFERACTIVATED:

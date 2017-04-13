@@ -25,13 +25,13 @@
     <ClInclude Include="..\src\Dialogs\StaticDialog.h" />
     <ClInclude Include="..\src\Dialogs\URLCtrl.h" />
     <ClInclude Include="..\src\Dialogs\Window.h" />
-    <ClInclude Include="..\src\DockingFeature\resource.h" />
     <ClInclude Include="..\src\Headers\menuCmdID.h" />
     <ClInclude Include="..\src\Headers\NativeLang_def.h" />
     <ClInclude Include="..\src\Headers\Notepad_plus_msgs.h" />
     <ClInclude Include="..\src\Headers\PluginInterface.h" />
     <ClInclude Include="..\src\Headers\Scintilla.h" />
     <ClInclude Include="..\src\PluginDefinition.h" />
+    <ClInclude Include="..\src\Settings.h" />
     <ClInclude Include="..\src\RtlManager.h" />
   </ItemGroup>
   <ItemGroup>
@@ -41,6 +41,7 @@
     <ClCompile Include="..\src\Dialogs\URLCtrl.cpp" />
     <ClCompile Include="..\src\DllExport.cpp" />
     <ClCompile Include="..\src\PluginDefinition.cpp" />
+    <ClCompile Include="..\src\Settings.cpp" />
     <ClCompile Include="..\src\RtlManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -54,7 +55,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>NppPluginTemplate</RootNamespace>
     <ProjectName>RTLManager</ProjectName>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -101,6 +102,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Debug\plugins\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>

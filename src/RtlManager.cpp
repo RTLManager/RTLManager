@@ -3,6 +3,8 @@
 #include "PluginDefinition.h"
 #include <fstream>
 #include <ctime>
+#include "Shlwapi.h"
+
 #include "Dialogs\PrefDialog.h"
 #include "Headers\Notepad_plus_msgs.h"
 #include "Headers\menuCmdID.h"
@@ -10,11 +12,10 @@
 //a map from the file paths to a 
 //bool that states if the file should be in rtl
 map<vector<TCHAR>, char, TcharVectorComp> fileMap;
-extern TCHAR iniFilePath[MAX_PATH];
-const string FLAG = "V0.8OK";
 extern DefaultPref defaultPref;
 bool isRtl;
 HWND lastView;
+extern NppData nppData;
 
 
 
@@ -22,46 +23,7 @@ HWND lastView;
 vector<TCHAR> currentTabPath;
 int maxSize = 1000;
 
-// saves the settings to the ini file
-void saveSettings() {
-	std::ofstream iniFile;
-	iniFile.open(iniFilePath, ios::binary | ios::trunc);
 
-	if (!iniFile.is_open()) {
-		return;
-	}
-	boost::archive::binary_oarchive boa(iniFile);
-	//marking the file
-
-	boa << FLAG;
-	boa << defaultPref;
-	boa << isRtl;
-	boa << fileMap;
-	iniFile.close();
-}
-
-//loads settings from ini file
-void loadSettings() {
-
-	std::ifstream iniFile(iniFilePath, ios::binary);
-	if (!iniFile.is_open()) {
-		return;
-	}
-	boost::archive::binary_iarchive ia(iniFile);
-	// read class state from archive
-	string flag;
-	ia >> flag;
-	//checking if the settings file is OK
-	//returning if it's not
-	if (flag.compare(FLAG) != 0) {
-		return;
-	}
-	ia >> defaultPref;
-	ia >> isRtl;
-	ia >> fileMap;
-
-	iniFile.close();
-}
 
 //checks if the current buffer (tab) in NPP is in rtl mode
 //RETURN VALUE: true if it's in rtl, false otherwise
@@ -125,6 +87,7 @@ void bufferChanged() {
 	}
 	currentTabPath.clear();
 	currentTabPath.insert(currentTabPath.begin(), newPath, newPath + getTcharPathLength(newPath));
+	currentTabPath.insert(currentTabPath.end(), '\0');
 	delete[] newPath;
 	map<vector<TCHAR>, char, vector<TCHAR>>::iterator it = fileMap.find(currentTabPath);
 
@@ -156,8 +119,9 @@ void bufferChanged() {
 void fileBeforeClose() {
 	if (currentTabPath.empty()) {
 		return;
-	}
-	if (currentTabPath[0] == 'n' && currentTabPath[1] == 'e' && currentTabPath[2] == 'w') {
+	}//TEST THIS
+	const TCHAR * file = &(currentTabPath[0]);
+	if (::PathFileExists(file) == FALSE) {
 		fileMap.erase(currentTabPath);
 		currentTabPath.clear();
 	}

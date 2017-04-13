@@ -25,8 +25,7 @@
 // The plugin data that Notepad++ needs
 //
 FuncItem funcItem[nbFunc];
-TCHAR iniFilePath[MAX_PATH];
-const TCHAR configFileName[] = TEXT("RtlManager.ini");
+
 
 
 //
@@ -36,23 +35,7 @@ NppData nppData;
 HelpDialog hDlg;
 PrefDialog pDlg;
 
-//
-// Initialize your plugin data here
-// It will be called while plugin loading   
-void pluginInit(HANDLE /*hModule*/)
-{
-	::SendMessage(nppData._nppHandle, NPPM_GETPLUGINSCONFIGDIR, MAX_PATH, (LPARAM)iniFilePath);
 
-	// if config path doesn't exist, we create it
-	if (PathFileExists(iniFilePath) == FALSE)
-	{
-		::CreateDirectory(iniFilePath, NULL);
-	}
-
-	// make your plugin config file full file path name
-	PathAppend(iniFilePath, configFileName);
-
-}
 
 //
 // Here you can do the clean up, save the parameters (if any) for the next session

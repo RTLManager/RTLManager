@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\src\DllExport.cpp" />
+    <ClCompile Include="..\src\PluginDefinition.cpp" />
+    <ClCompile Include="..\src\RtlManager.cpp" />
+    <ClCompile Include="..\src\Dialogs\HelpDialog.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Dialogs\PrefDialog.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Dialogs\StaticDialog.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Dialogs\URLCtrl.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Settings.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\Dialogs\resource.h" />
+    <ClInclude Include="..\src\PluginDefinition.h" />
+    <ClInclude Include="..\src\RtlManager.h" />
+    <ClInclude Include="..\src\Dialogs\HelpDialog.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Dialogs\PrefDialog.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Dialogs\StaticDialog.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Dialogs\URLCtrl.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Dialogs\Window.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Headers\PluginInterface.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Headers\Scintilla.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Headers\Notepad_plus_msgs.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Headers\menuCmdID.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Headers\NativeLang_def.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Settings.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Dialogs">
+      <UniqueIdentifier>{0f73231b-87cf-45b5-8564-8e872c1efc25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{1c7e0081-c0b9-4ca4-a69f-dd4c45f52250}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\src\Dialogs\Dialogs.rc">
+      <Filter>Dialogs</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

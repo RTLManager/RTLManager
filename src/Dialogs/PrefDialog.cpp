@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 using namespace std;
 
-DefaultPref defaultPref = FirstChar;
+extern DefaultPref defaultPref;
 
 void PrefDialog::doDialog()
 {

@@ -25,14 +25,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "resource.h"
 #include "../Headers/PluginInterface.h"
 #include "URLCtrl.h"
+#include "../Settings.h"
 
 
-enum DefaultPref {
-	FirstChar = 0,
-	RTL = 1,
-	LTR = 2,
-	Nothing = 3
-};
 
 
 class PrefDialog : public StaticDialog
