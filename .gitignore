@@ -10,6 +10,8 @@ vs.proj/NppPluginTemplate.opensdf
 vs.proj/NppPluginTemplate.exp
 vs.proj/NppPluginTemplate.lib
 vs.proj/NppPluginTemplate.vcxproj.user
+vs.proj/RTLManager.exp
+vs.proj/RTLManager.lib
 *.aps
 *.zip
 /.vs/RTLManager0.8.1/v15/Solution.VC.db
