@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by RtlManager.rc
+// Used by Dialogs.rc
 //
 #define IDD_DIALOG1                     101
 #define IDD_PREF_DIALOG                 101
@@ -14,7 +14,7 @@
 #define IDC_STATIC_MAIL                 1010
 #define IDC_STATIC_SOURCE               1011
 #define IDD_HELP_DLG                    1012
-#define IDC_SOURCE_LINK	                1013
+#define IDC_SOURCE_LINK                 1013
 #define ID_ASDF_ASDF                    40001
 
 // Next default values for new objects
