@@ -95,6 +95,7 @@ extern "C" __declspec(dllexport) void beNotified(SCNotification *notifyCode)
 	switch (notifyCode->nmhdr.code) 
 	{
 	case NPPN_SHUTDOWN:
+		bufferChanged();
 		saveSettings();
 		break;
 	case NPPN_READY:
