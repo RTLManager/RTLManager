@@ -12,7 +12,10 @@ TCHAR iniFilePath[MAX_PATH];
 const TCHAR configFileName[] = TEXT("RtlManager.ini");
 
 const string FLAG = "V0.8OK";
-DefaultPref defaultPref;
+#pragma section("SHARED", read, write, shared) 
+
+__declspec(allocate("SHARED")) DefaultPref defaultPref;
+
 extern bool isRtl;
 extern NppData nppData;
 extern map<vector<TCHAR>, char, TcharVectorComp> fileMap;
@@ -36,7 +39,14 @@ void buildIniPath()
 
 }
 
+__declspec(allocate("SHARED")) bool isLoaded = false;
+bool isFirstLoad;
+
 void saveSettings() {
+	if (!isFirstLoad) {
+		return;
+	}
+
 	std::ofstream iniFile;
 
 	iniFile.open(iniFilePath, ios::binary | ios::trunc);
@@ -57,6 +67,11 @@ void saveSettings() {
 //loads settings from ini file
 void loadSettings() {
 
+	isFirstLoad = !isLoaded;
+	isLoaded = true;
+	if (!isFirstLoad) {
+		return;
+	}
 	std::ifstream iniFile(iniFilePath, ios::binary);
 	if (!iniFile.is_open()) {
 		return;
