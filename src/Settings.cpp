@@ -6,20 +6,37 @@
 #include <boost/serialization/vector.hpp>
 #include "Headers\Notepad_plus_msgs.h"
 #include "Headers\PluginInterface.h"
+#include <vector>
 
 
 TCHAR iniFilePath[MAX_PATH];
 const TCHAR configFileName[] = TEXT("RtlManager.ini");
 
-const string FLAG = "V0.8OK";
+const string FLAG = "V0.9OK";
+const string V8FLAG = "V0.8OK";
 #pragma section("SHARED", read, write, shared) 
 
 __declspec(allocate("SHARED")) DefaultPref defaultPref;
 
+struct StampedBool {
+	friend class boost::serialization::access;
+	// When the class Archive corresponds to an output archive, the
+	// & operator is defined similar to <<.  Likewise, when the class Archive
+	// is a type of input archive the & operator is defined similar to >>.
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar & isRtl;
+		ar & lastUpdate;
+	}
+	bool isRtl;
+	time_t lastUpdate;
+};
+
 extern bool isRtl;
 extern NppData nppData;
-extern map<vector<TCHAR>, char, TcharVectorComp> fileMap;
-
+extern map<vector<TCHAR>, StampedBool, TcharVectorComp> fileMap;
+int maxEntries;
 
 
 
@@ -58,9 +75,10 @@ void saveSettings() {
 	//marking the file
 
 	boa << FLAG;
+	boa << fileMap;
 	boa << defaultPref;
 	boa << isRtl;
-	boa << fileMap;
+	boa << maxEntries;
 	iniFile.close();
 }
 
@@ -83,11 +101,44 @@ void loadSettings() {
 	//checking if the settings file is OK
 	//returning if it's not
 	if (flag.compare(FLAG) != 0) {
+		if (flag.compare(V8FLAG) == 0) {
+			v8LoadSettings(ia);
+		}
 		return;
 	}
+	ia >> fileMap;
 	ia >> defaultPref;
 	ia >> isRtl;
-	ia >> fileMap;
-
+	ia >> maxEntries;
 	iniFile.close();
+}
+
+//pair<vector<TCHAR>, StampedBool> unaryOp(pair<vector<TCHAR>, char> src) {
+//	StampedBool temp;
+//	temp.isRtl = src.second;
+//	temp.lastUpdate = time(NULL);
+//	return pair<vector<TCHAR>, StampedBool>(src.first, temp);
+//	
+//}
+
+///reverse compatibility for v8 where the map had a different structure
+/// the function loads the settings files and converts the old map to the current map structure
+void v8LoadSettings(boost::archive::binary_iarchive &ia ) {
+	map<vector<TCHAR>, char> tempMap;
+	ia >> defaultPref;
+	ia >> isRtl;
+	ia >> tempMap;
+	maxEntries = 1000;
+	for (map<vector<TCHAR>, char>::iterator it = tempMap.begin(); it != tempMap.end(); it++) {
+		StampedBool tempSB;
+		tempSB.lastUpdate = time(NULL);
+		tempSB.isRtl = it->second;
+		fileMap.insert(pair<vector<TCHAR>, StampedBool>(it->first, tempSB));
+	}
+	/*
+	std transform gives the followin error:
+	Severity	Code	Description	Project	File	Line	Suppression State
+	Error	C2678	binary '=': no operator found which takes a left-hand operand of type 'const std::vector<TCHAR,std::allocator<wchar_t>>' (or there is no acceptable conversion)	RTLManager	f:\vs17\vc\tools\msvc\14.10.25017\include\utility	238	
+	*/
+	//std::transform(temp.begin(), temp.end(), fileMap.begin(), unaryOp);
 }

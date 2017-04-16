@@ -2,7 +2,8 @@
 #include "RtlManager.h"
 #include "PluginDefinition.h"
 #include <fstream>
-#include <ctime>
+#include <algorithm>
+
 #include "Shlwapi.h"
 
 #include "Dialogs\PrefDialog.h"
@@ -11,7 +12,7 @@
 
 //a map from the file paths to a 
 //bool that states if the file should be in rtl
-map<vector<TCHAR>, char, TcharVectorComp> fileMap;
+map<vector<TCHAR>, StampedBool, TcharVectorComp> fileMap;
 extern DefaultPref defaultPref;
 bool isRtl;
 HWND lastView;
@@ -21,7 +22,6 @@ extern NppData nppData;
 
 //represents the current buffer (tab) full path
 vector<TCHAR> currentTabPath;
-int maxSize = 1000;
 
 
 
@@ -88,16 +88,19 @@ void bufferChanged() {
 	::SendMessage(nppData._nppHandle, NPPM_GETFULLCURRENTPATH, 0, (LPARAM)newPath);
 	
 	if (!currentTabPath.empty()) {
-		fileMap.insert_or_assign(currentTabPath, isCurrentRTL());
+		StampedBool temp;
+		temp.isRtl = isCurrentRTL();
+		temp.lastUpdate = time(NULL);
+		fileMap.insert_or_assign(currentTabPath, temp );
 	}
 	currentTabPath.clear();
 	currentTabPath.insert(currentTabPath.begin(), newPath, newPath + getTcharPathLength(newPath));
 	currentTabPath.insert(currentTabPath.end(), '\0');
 	delete[] newPath;
-	map<vector<TCHAR>, char, vector<TCHAR>>::iterator it = fileMap.find(currentTabPath);
+	map<vector<TCHAR>, StampedBool, vector<TCHAR>>::iterator it = fileMap.find(currentTabPath);
 
 	if (it != fileMap.end()) {
-		changeTextDirection(it->second);
+		changeTextDirection(it->second.isRtl);
 	}
 	else {
 		switch (defaultPref) {
@@ -132,3 +135,21 @@ void fileBeforeClose() {
 	}
 }
 
+
+// a comperison for the std::sort method
+//the order will be a decending order based on 'last update'
+bool sortComp(pair<vector<TCHAR>, StampedBool> a, pair<vector<TCHAR>, StampedBool> b) {
+	return a.second.lastUpdate > b.second.lastUpdate;
+}
+
+/// reduces the size of the file map (up) to the size of max
+/// the elements that will be removed will be the oldest (according to 'last update' field) elements in the map
+void reduceFileMap(int max) {
+	if (fileMap.size() <= max) {
+		return;
+	}
+	vector<pair<vector<TCHAR>, StampedBool>> vec(fileMap.begin(), fileMap.end());
+	std::sort(vec.begin(), vec.end(), sortComp);
+	fileMap.clear();
+	fileMap.insert(vec.begin(), vec.begin() + max);
+}

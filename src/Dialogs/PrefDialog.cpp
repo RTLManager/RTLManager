@@ -21,10 +21,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../Headers/NativeLang_def.h"
 #include "resource.h"
 #include <string>
+#include <commctrl.h>
+
 
 using namespace std;
 
 extern DefaultPref defaultPref;
+extern int maxEntries;
+
 
 void PrefDialog::doDialog()
 {
@@ -51,8 +55,9 @@ INT_PTR CALLBACK PrefDialog::run_dlgProc(UINT Message, WPARAM wParam, LPARAM lPa
 		::SendDlgItemMessage(_hSelf, IDD_COMBOBOX_DEFAULT_ACTION, CB_ADDSTRING, 0, (LPARAM)TEXT("Don't do anything"));
 		//int sel = defaultPref;
 		::SendDlgItemMessage(_hSelf, IDD_COMBOBOX_DEFAULT_ACTION, CB_SETCURSEL, defaultPref, 0);
-
-
+		::SetDlgItemInt(_hSelf, IDC_SPIN_BOX , maxEntries, FALSE);
+		HWND hUpDown = ::GetDlgItem(_hSelf, IDC_SPIN_CTL);
+		::SendMessage(hUpDown, UDM_SETRANGE, 0L, MAKELONG(10000, 0));
 
 		return TRUE;
 	}
@@ -69,6 +74,8 @@ INT_PTR CALLBACK PrefDialog::run_dlgProc(UINT Message, WPARAM wParam, LPARAM lPa
 			if (dpSelection != CB_ERR) {
 				defaultPref = (DefaultPref)dpSelection;
 			}
+			maxEntries =  ::GetDlgItemInt(_hSelf, IDC_SPIN_BOX, NULL, FALSE);
+
 			display(FALSE);
 			return TRUE;
 			break;

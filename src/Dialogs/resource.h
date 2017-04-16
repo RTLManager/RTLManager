@@ -15,6 +15,9 @@
 #define IDC_STATIC_SOURCE               1011
 #define IDD_HELP_DLG                    1012
 #define IDC_SOURCE_LINK                 1013
+#define IDC_SPIN_CTL					1014
+#define IDC_SPIN_BOX					1015
+#define IDC_STATIC						1016
 #define ID_ASDF_ASDF                    40001
 
 // Next default values for new objects

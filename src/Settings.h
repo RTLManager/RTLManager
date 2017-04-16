@@ -2,6 +2,8 @@
 #include <iostream>
 #include <shlwapi.h>
 #include <vector>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
 
 using namespace std;
 
@@ -41,4 +43,6 @@ struct TcharVectorComp {
 
 
 };
+
+void v8LoadSettings(boost::archive::binary_iarchive &ia );
 

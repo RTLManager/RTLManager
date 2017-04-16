@@ -3,10 +3,13 @@
 //#include <winnt.h>
 //#include <minwindef.h>
 #include "Headers/PluginInterface.h"
-
+#include <ctime>
 #include <vector>
 
-
+struct StampedBool {
+	bool isRtl;
+	time_t lastUpdate;
+};
 
 using namespace std;
 
@@ -25,3 +28,5 @@ void toggleRtl();
 void fileBeforeClose();
 HWND getLastView();
 HWND getCurrentView();
+
+void reduceFileMap(int max);
