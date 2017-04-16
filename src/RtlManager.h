@@ -29,4 +29,3 @@ void fileBeforeClose();
 HWND getLastView();
 HWND getCurrentView();
 
-void reduceFileMap(int max);

@@ -64,6 +64,13 @@ void saveSettings() {
 		return;
 	}
 
+	//in order to avoid running this function every time an entry is added
+	//will wait till it passes 20% of the max entries
+	//TODO let the user customize the ceiling that will trigger the function
+	if (fileMap.size() > maxEntries * 1.2) {
+		reduceFileMap(maxEntries);
+	}
+
 	std::ofstream iniFile;
 
 	iniFile.open(iniFilePath, ios::binary | ios::trunc);
@@ -141,4 +148,22 @@ void v8LoadSettings(boost::archive::binary_iarchive &ia ) {
 	Error	C2678	binary '=': no operator found which takes a left-hand operand of type 'const std::vector<TCHAR,std::allocator<wchar_t>>' (or there is no acceptable conversion)	RTLManager	f:\vs17\vc\tools\msvc\14.10.25017\include\utility	238	
 	*/
 	//std::transform(temp.begin(), temp.end(), fileMap.begin(), unaryOp);
+}
+
+// a comperison for the std::sort method
+//the order will be a decending order based on 'last update'
+bool sortComp(pair<vector<TCHAR>, StampedBool> a, pair<vector<TCHAR>, StampedBool> b) {
+	return a.second.lastUpdate > b.second.lastUpdate;
+}
+
+/// reduces the size of the file map (up) to the size of max
+/// the elements that will be removed will be the oldest (according to 'last update' field) elements in the map
+void reduceFileMap(int max) {
+	if (fileMap.size() <= max) {
+		return;
+	}
+	vector<pair<vector<TCHAR>, StampedBool>> vec(fileMap.begin(), fileMap.end());
+	std::sort(vec.begin(), vec.end(), sortComp);
+	fileMap.clear();
+	fileMap.insert(vec.begin(), vec.begin() + max);
 }

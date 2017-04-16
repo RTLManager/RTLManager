@@ -45,4 +45,5 @@ struct TcharVectorComp {
 };
 
 void v8LoadSettings(boost::archive::binary_iarchive &ia );
+void reduceFileMap(int max);
 

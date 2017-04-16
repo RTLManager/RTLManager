@@ -136,20 +136,3 @@ void fileBeforeClose() {
 }
 
 
-// a comperison for the std::sort method
-//the order will be a decending order based on 'last update'
-bool sortComp(pair<vector<TCHAR>, StampedBool> a, pair<vector<TCHAR>, StampedBool> b) {
-	return a.second.lastUpdate > b.second.lastUpdate;
-}
-
-/// reduces the size of the file map (up) to the size of max
-/// the elements that will be removed will be the oldest (according to 'last update' field) elements in the map
-void reduceFileMap(int max) {
-	if (fileMap.size() <= max) {
-		return;
-	}
-	vector<pair<vector<TCHAR>, StampedBool>> vec(fileMap.begin(), fileMap.end());
-	std::sort(vec.begin(), vec.end(), sortComp);
-	fileMap.clear();
-	fileMap.insert(vec.begin(), vec.begin() + max);
-}
