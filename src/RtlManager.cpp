@@ -21,7 +21,7 @@ extern NppData nppData;
 
 
 //represents the current buffer (tab) full path
-vector<TCHAR> currentTabPath;
+vector<TCHAR> currentTabPath = vector<TCHAR>();
 
 
 
@@ -84,7 +84,7 @@ int getTcharPathLength(TCHAR * path) {
 //runs on buffer changed event, 
 //saves the old tab settings and loads the new tab's settings (if exists)
 void bufferChanged() {
-	TCHAR* newPath = new TCHAR[MAX_PATH];
+	TCHAR newPath [MAX_PATH];
 	::SendMessage(nppData._nppHandle, NPPM_GETFULLCURRENTPATH, 0, (LPARAM)newPath);
 	
 	if (!currentTabPath.empty()) {
@@ -96,7 +96,6 @@ void bufferChanged() {
 	currentTabPath.clear();
 	currentTabPath.insert(currentTabPath.begin(), newPath, newPath + getTcharPathLength(newPath));
 	currentTabPath.insert(currentTabPath.end(), '\0');
-	delete[] newPath;
 	map<vector<TCHAR>, StampedBool, vector<TCHAR>>::iterator it = fileMap.find(currentTabPath);
 
 	if (it != fileMap.end()) {
