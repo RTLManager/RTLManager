@@ -36,7 +36,7 @@ struct StampedBool {
 extern bool isRtl;
 extern NppData nppData;
 extern map<vector<TCHAR>, StampedBool, TcharVectorComp> fileMap;
-int maxEntries;
+__declspec(allocate("SHARED")) int maxEntries;
 
 
 

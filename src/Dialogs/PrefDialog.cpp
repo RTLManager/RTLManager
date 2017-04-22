@@ -57,7 +57,7 @@ INT_PTR CALLBACK PrefDialog::run_dlgProc(UINT Message, WPARAM wParam, LPARAM lPa
 		::SendDlgItemMessage(_hSelf, IDD_COMBOBOX_DEFAULT_ACTION, CB_SETCURSEL, defaultPref, 0);
 		::SetDlgItemInt(_hSelf, IDC_SPIN_BOX , maxEntries, FALSE);
 		HWND hUpDown = ::GetDlgItem(_hSelf, IDC_SPIN_CTL);
-		::SendMessage(hUpDown, UDM_SETRANGE, 0L, MAKELONG(10000, 0));
+		::SendMessage(hUpDown, UDM_SETRANGE, 0L, MAKELONG(10000, 100));
 
 		return TRUE;
 	}
